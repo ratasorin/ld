@@ -15,28 +15,31 @@
 
 # Quartus Prime: Generate Tcl File for Project
 # File: prj.tcl
-# Generated on: Sun May 12 21:59:01 2024
+# Generated on: Sun May 12 22:59:34 2024
 
 # Load Quartus Prime Tcl Project package
 package require ::quartus::project
 
-project_new "sr-latch" -overwrite
-
 set need_to_close_project 0
 set make_assignments 1
 
+project_new "D_LATCH" -overwrite
+
 # Check that the right project is open
 if {[is_project_open]} {
-	if {[string compare $quartus(project) "sr-latch"]} {
-		puts "Project sr-latch is not open"
+	if {[string compare $quartus(project) "D_LATCH"]} {
+		puts "Project D_LATCH is not open"
 		set make_assignments 0
+		load_package flow
+		execute_flow -compile
 	}
 } else {
 	# Only open if not already open
-	if {[project_exists sr-latch]} {
-		project_open -revision sr-latch sr-latch
+	if {[project_exists D_LATCH]} {
+		project_open -revision D_LATCH D_LATCH
+
 	} else {
-		project_new -revision sr-latch sr-latch
+		project_new -revision D_LATCH D_LATCH
 	}
 	set need_to_close_project 1
 }
@@ -45,9 +48,8 @@ if {[is_project_open]} {
 if {$make_assignments} {
 	set_global_assignment -name FAMILY "MAX 10"
 	set_global_assignment -name DEVICE 10M50DAF484C7G
-	set_global_assignment -name TOP_LEVEL_ENTITY SR_LATCH
 	set_global_assignment -name ORIGINAL_QUARTUS_VERSION 23.1STD.0
-	set_global_assignment -name PROJECT_CREATION_TIME_DATE "21:41:27  MAY 12, 2024"
+	set_global_assignment -name PROJECT_CREATION_TIME_DATE "22:49:49  MAY 12, 2024"
 	set_global_assignment -name LAST_QUARTUS_VERSION "23.1std.0 Lite Edition"
 	set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
 	set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
@@ -60,16 +62,17 @@ if {$make_assignments} {
 	set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_board_design_symbol
 	set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_board_design_signal_integrity
 	set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_board_design_boundary_scan
+	set_global_assignment -name VERILOG_FILE "sr-latch.v"
+	set_global_assignment -name VERILOG_FILE "d-latch.v"
 	set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 200 LFPM AIRFLOW"
 	set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
-	set_global_assignment -name VERILOG_FILE "sr-latch.v"
 	set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
 	set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
 	set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
 	set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
-	set_location_assignment PIN_C10 -to reset
-	set_location_assignment PIN_C11 -to set
-	set_location_assignment PIN_A8 -to out
+	set_location_assignment PIN_C10 -to d
+	set_location_assignment PIN_C11 -to en
+	set_location_assignment PIN_A8 -to q
 
 	# Including default assignments
 	set_global_assignment -name TIMING_ANALYZER_MULTICORNER_ANALYSIS ON -family "MAX 10"

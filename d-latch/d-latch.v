@@ -6,8 +6,8 @@ module D_LATCH (
 
 wire set, reset, out;
 
-assign set = ~(~d | en);
-assign reset = ~(d | en);
+assign set = d & en;
+assign reset = ~d & en;
 
 SR_LATCH sr_latch_instance(
     .set(set),
